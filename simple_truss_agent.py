@@ -4,11 +4,16 @@ import os
 from PIL import Image
 import tools
 from tools import client
-from config import MODEL_NAME
+from config import MODEL_NAME, ANTHROPIC_API_KEY
 from colorama import init, Fore, Style
 
 # Initialize colorama for Windows compatibility
 init()
+
+# Ensure a valid API key is configured before making any requests
+if not ANTHROPIC_API_KEY or ANTHROPIC_API_KEY == "your-api-key-here":
+    print("Error: Please set your Anthropic API key in config.py before running the application.")
+    raise SystemExit(1)
 
 class TrussState:
     """Manages the state and formatting of truss data"""
