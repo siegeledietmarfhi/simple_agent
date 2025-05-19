@@ -54,6 +54,7 @@ Chat with the agent to:
    ```python
    ANTHROPIC_API_KEY = "your-api-key-here"
    ```
+   The application will exit with a clear message if this key is not set.
 
 3. Run the application:
    ```bash
