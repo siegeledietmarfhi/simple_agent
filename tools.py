@@ -257,7 +257,10 @@ def run_analysis(nodes, elements, forces, constraints, A, E):
         E (float): Young's modulus in Pa
         
     Returns:
-        tuple: (max_displacement, max_tension, max_compression, abs_max_stress, result_image)
+        tuple: (analysis_data, result_image)
+
+        analysis_data is a dictionary with either a ``status`` of "success"
+        and calculated results or "error" with a descriptive message.
     """
     try:
         num_nodes = len(nodes)
@@ -306,11 +309,12 @@ def run_analysis(nodes, elements, forces, constraints, A, E):
         try:
             U_red = np.linalg.solve(K_red, F_red)
         except np.linalg.LinAlgError:
-            print("Error: Singular matrix. The structure might be unstable.")
-            return None, None, None, None, None
+            message = "Singular matrix. The structure might be unstable."
+            print(f"Error: {message}")
+            return {"status": "error", "message": message}, None
         except Exception as e:
             print(f"Error solving system: {str(e)}")
-            return None, None, None, None, None
+            return {"status": "error", "message": str(e)}, None
 
         # Reconstruct full displacement vector
         U = np.zeros(ndof)
